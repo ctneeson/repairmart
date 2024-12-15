@@ -1,0 +1,19 @@
+USE [RepairMart]
+GO
+
+IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ordersFeedback' AND TABLE_SCHEMA = 'dbo')
+   DROP TABLE [dbo].[ordersFeedback];
+GO
+
+CREATE TABLE dbo.ordersFeedback (
+	orderFeedbackId int IDENTITY(1,1) NOT NULL, --PRIMARY KEY
+	orderId int NOT NULL, -- FOREIGN KEY
+	userId int NOT NULL, -- FOREIGN KEY
+	feedbackTypeId int NOT NULL, -- FOREIGN KEY
+	feedbackComments varchar(400) DEFAULT NULL,
+	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	ACTIVE bit NOT NULL DEFAULT 1
+);
+
+INSERT INTO ordersFeedback (orderId) VALUES ();
