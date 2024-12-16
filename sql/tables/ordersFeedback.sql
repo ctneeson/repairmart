@@ -6,7 +6,7 @@ IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ordersFeed
 GO
 
 CREATE TABLE dbo.ordersFeedback (
-	orderFeedbackId int IDENTITY(1,1) NOT NULL, --PRIMARY KEY
+	orderFeedbackId int IDENTITY(1,1) PRIMARY KEY,
 	orderId int NOT NULL, -- FOREIGN KEY
 	userId int NOT NULL, -- FOREIGN KEY
 	feedbackTypeId int NOT NULL, -- FOREIGN KEY

@@ -36,42 +36,63 @@ BEGIN
 		SET @ERR_MESSAGE = 'Invalid input provided: firstName, lastName, emailAddress, userPassword and accountTypeId must not be null.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_userId NOT IN (SELECT userId FROM users))
+	ELSE IF (@inp_userId NOT IN (SELECT userId FROM users WHERE ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid User ID provided';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_accountTypeId NOT IN (SELECT accountTypeId FROM accountType))
+	ELSE IF (@inp_accountTypeId NOT IN (SELECT accountTypeId FROM accountType WHERE ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid account type provided';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (LEN(@inp_userPassword) < 3 OR LEN(@inp_userPassword) > 100)
+	ELSE IF (@inp_countryId NOT IN (SELECT countryId FROM country WHERE ACTIVE = 1))
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid password length.';
+		SET @ERR_MESSAGE = 'Invalid country provided';
 		SET @ERR_IND = 1;
 	END
-	/* Validate other input lengths */
---	ELSE IF
---	BEGIN
---	END
+	ELSE IF LEN(@inp_userPassword) < 3 OR LEN(@inp_userPassword) > 100
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid password length. Pasword must be between 3 and 100 characters';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_firstName) > 255 OR LEN(@inp_lastName) > 255
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid name length. firstName and lastName must not exceed 255 characters/';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_emailAddress) > 500
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid emailAddress length. emailAddrss must not exceed 500 characters/';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_addressLine1) > 500 OR LEN(@inp_addressLine2) > 500
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid address length. addressLine1 and addressLine2 must not exceed 500 characters/';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_postCode) > 255
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid postCode length. postCode must not exceed 255 characters/';
+		SET @ERR_IND = 1;
+	END
 	ELSE IF NOT (@inp_emailAddress LIKE '%_@__%.__%')
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid email address provided. Email syntax is not correct.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_emailAddress = (SELECT emailAddress FROM users WHERE userId = @inp_userId)
-         AND @inp_firstName = (SELECT firstName FROM users WHERE userId = @inp_userId)
-         AND @inp_lastName = (SELECT lastName FROM users WHERE userId = @inp_userId)
-         AND ENCRYPTBYPASSPHRASE((SELECT aes_key FROM userAuth WHERE userId = @inp_userId),
-		                         @inp_emailAddress, @inp_userPassword, (SELECT salt FROM userAuth WHERE userId = @inp_userId))
-			                  = (SELECT userPassword FROM users WHERE userId = @inp_userId)
-         AND @inp_accountTypeId = (SELECT ut.accountTypeId
-		                 FROM accountType ut
-						 JOIN users u
-						 ON ut.accountTypeId = u.accountTypeId
-						 AND u.userId = @inp_userId)
-        )
+	ELSE IF (@inp_emailAddress = (SELECT emailAddress FROM users WHERE userId = @inp_userId AND ACTIVE = 1)
+			AND @inp_firstName = (SELECT firstName FROM users WHERE userId = @inp_userId AND ACTIVE = 1)
+			AND @inp_lastName = (SELECT lastName FROM users WHERE userId = @inp_userId AND ACTIVE = 1)
+			AND ENCRYPTBYPASSPHRASE((SELECT aes_key FROM userAuth WHERE userId = @inp_userId AND ACTIVE = 1),
+			                         @inp_emailAddress, @inp_userPassword, (SELECT salt FROM userAuth WHERE userId = @inp_userId AND ACTIVE = 1))
+				                  = (SELECT userPassword FROM users WHERE userId = @inp_userId AND ACTIVE = 1)
+			AND @inp_accountTypeId = (SELECT ut.accountTypeId
+								      FROM accountType ut
+									  JOIN users u
+									   ON ut.accountTypeId = u.accountTypeId
+									  AND u.userId = @inp_userId)
+           )
 	BEGIN
 		SET @ERR_MESSAGE = 'Update rejected. No input details have changed.';
 		SET @ERR_IND = 1;

@@ -6,7 +6,7 @@ IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'orders' AN
 GO
 
 CREATE TABLE dbo.orders (
-	orderId int IDENTITY(1,1) NOT NULL, --PRIMARY KEY
+	orderId int IDENTITY(1,1) PRIMARY KEY,
 	listingId int NOT NULL, -- FOREIGN KEY
 	quote_deliveryMethodId int NOT NULL, -- FOREIGN KEY
 	orderStatusId int NOT NULL, -- FOREIGN KEY

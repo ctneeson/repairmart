@@ -6,7 +6,7 @@ IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'quote_deli
 GO
 
 CREATE TABLE dbo.quote_deliveryMethod (
-	quote_deliveryMethodId int IDENTITY(1,1) NOT NULL, --PRIMARY KEY
+	quote_deliveryMethodId int IDENTITY(1,1) PRIMARY KEY,
 	quoteId int NOT NULL, -- FOREIGN KEY
 	deliveryMethodId int NOT NULL, -- FOREIGN KEY
 	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
