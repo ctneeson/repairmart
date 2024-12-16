@@ -1,6 +1,14 @@
 USE [RepairMart]
 GO
 
+IF EXISTS(SELECT 1 FROM sys.objects WHERE OBJECT_ID = OBJECT_ID('orders'))
+BEGIN
+    ALTER TABLE orders DROP CONSTRAINT IF EXISTS FK_Orders_ListingID;
+    ALTER TABLE orders DROP CONSTRAINT IF EXISTS FK_Orders_QuoteDeliveryMethodID;
+    ALTER TABLE orders DROP CONSTRAINT IF EXISTS FK_Orders_OrderStatusID;
+END
+GO
+
 IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'orders' AND TABLE_SCHEMA = 'dbo')
    DROP TABLE [dbo].[orders];
 GO
@@ -17,4 +25,4 @@ CREATE TABLE dbo.orders (
 	ACTIVE bit NOT NULL DEFAULT 1
 );
 
-INSERT INTO orders (listingId, quote_deliveryMethodId) VALUES (,);
+--INSERT INTO orders (listingId, quote_deliveryMethodId) VALUES (,);
