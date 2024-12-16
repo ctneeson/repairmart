@@ -48,3 +48,6 @@ ALTER TABLE dbo.quotes ADD CONSTRAINT FK_Quotes_OverrideCountryID FOREIGN KEY (o
 -- users
 ALTER TABLE dbo.users ADD CONSTRAINT FK_Users_CountryID FOREIGN KEY (countryId) REFERENCES country(countryId);
 ALTER TABLE dbo.users ADD CONSTRAINT FK_Users_AccountTypeID FOREIGN KEY (accountTypeId) REFERENCES accountType(accountTypeId);
+
+-- userAuth
+ALTER TABLE dbo.userAuth ADD CONSTRAINT FK_UserAuth_UserID FOREIGN KEY (userId) REFERENCES users(userId);
