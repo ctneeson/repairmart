@@ -119,6 +119,7 @@ ALTER TABLE dbo.emails_recipients ADD CONSTRAINT FK_EmailsRecipients_RecipientUs
 -- listings
 ALTER TABLE dbo.listings ADD CONSTRAINT FK_Listings_UserID FOREIGN KEY (userId) REFERENCES users(userId);
 ALTER TABLE dbo.listings ADD CONSTRAINT FK_Listings_ListingStatusID FOREIGN KEY (listingStatusId) REFERENCES listingStatus(listingStatusId);
+ALTER TABLE dbo.listings ADD CONSTRAINT FK_Listings_ListingBudgetCurrencyID FOREIGN KEY (listingBudgetCurrencyId) REFERENCES currency(currencyId);
 ALTER TABLE dbo.listings ADD CONSTRAINT FK_Listings_OverrideCountryID FOREIGN KEY (overrideCountryId) REFERENCES country(countryId);
 
 -- listings_attachments

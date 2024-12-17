@@ -18,6 +18,7 @@ CREATE TABLE dbo.listings (
 	userId int NOT NULL, -- FOREIGN KEY
 	listingStatusId int NOT NULL, -- FOREIGN KEY
 	listingTitle varchar(500) NOT NULL,
+	listingBudgetCurrencyId int, -- FOREIGN KEY
 	listingBudget decimal(10,2),
 	useDefaultLocation bit NOT NULL DEFAULT 1,
 	overrideAddressLine1 varchar(500),
