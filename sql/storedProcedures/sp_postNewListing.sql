@@ -7,16 +7,16 @@ GO
 
 CREATE PROCEDURE sp_postNewListing
    @inp_userId int,
-   @listingStatusId int,
-   @listingTitle varchar(500),
-   @listingBudgetCurrencyId int,
-   @listingBudget decimal(10,2),
-   @useDefaultLocation bit,
-   @overrideAddressLine1 varchar(500),
-   @overrideAddressLine2 varchar(500),
-   @overrideCountryId int,
-   @overridePostCode varchar(50),
-   @listingExpiry int,
+   @inp_listingStatusId int,
+   @inp_listingTitle varchar(500),
+   @inp_listingBudgetCurrencyId int,
+   @inp_listingBudget decimal(10,2),
+   @inp_useDefaultLocation bit,
+   @inp_overrideAddressLine1 varchar(500),
+   @inp_overrideAddressLine2 varchar(500),
+   @inp_overrideCountryId int,
+   @inp_overridePostCode varchar(50),
+   @inp_listingExpiry int,
    @ins_rows INT OUTPUT,
    @ERR_MESSAGE VARCHAR(500) OUTPUT,
    @ERR_IND BIT OUTPUT
@@ -26,10 +26,10 @@ BEGIN
     SET @ERR_IND = 0;
 
 	IF (@inp_userId IS NULL
-	    OR @listingStatusId IS NULL
-		OR @listingTitle IS NULL
-		OR @useDefaultLocation IS NULL
-		OR @listingExpiry IS NULL
+	    OR @inp_listingStatusId IS NULL
+		OR @inp_listingTitle IS NULL
+		OR @inp_useDefaultLocation IS NULL
+		OR @inp_listingExpiry IS NULL
 		)
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid input(s). userId, listingStatusId, listingTitle, useDefaultLocation and listingExpiry must not be null.';
