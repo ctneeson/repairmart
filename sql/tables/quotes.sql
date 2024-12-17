@@ -22,9 +22,6 @@ CREATE TABLE dbo.quotes (
 	quoteStatusId int NOT NULL, -- FOREIGN KEY
 	quoteCurrencyId int NOT NULL, -- FOREIGN KEY
 	quoteAmount DECIMAL(10,2),
-	deliveryMethodId int NOT NULL, -- FOREIGN KEY
-	deliveryMethodAmount DECIMAL(10,2),
-	quoteAmountTotal DECIMAL(10,2),
 	estimatedTurnaround INT NOT NULL,
 	useDefaultLocation bit NOT NULL DEFAULT 1,
 	overrideAddressLine1 varchar(500),
