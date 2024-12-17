@@ -128,25 +128,15 @@ BEGIN
 		userId = @inp_userId,
 		listingId = @inp_listingId,
 		quoteStatusId = @inp_quoteStatusId
-        quoteCurrencyId = @inp_quoteCurrencyId = (SELECT quoteCurrencyId from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_quoteAmount = (SELECT quoteAmount from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_estimatedTurnaround = (SELECT estimatedTurnaround from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_useDefaultLocation = (SELECT useDefaultLocation from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_overrideAddressLine1 = (SELECT overrideAddressLine1 from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_overrideAddressLine2 = (SELECT overrideAddressLine2 from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_overrideCountryId = (SELECT overrideCountryId from quotes WHERE quoteId = @inp_quoteId AND ACTIVE = 1)
-             AND @inp_overridePostCode
-		emailAddress = @inp_emailAddress,
-		firstname = @inp_firstName,
-		lastname = @inp_lastName,
-		userPassword = ENCRYPTBYPASSPHRASE((SELECT aes_key FROM userAuth WHERE userId = @inp_userId),
-		                         @inp_emailAddress + @inp_userPassword + (SELECT salt FROM userAuth WHERE userId = @inp_userId)),
-		accountTypeId = @inp_accountTypeId,
-		addressLine1 = @inp_addressLine1,
-		addressLine2 = @inp_addressLine2,
-		postCode = @inp_postCode,
-		countryId = @inp_countryId
-	WHERE userId = @inp_userId;
+        quoteCurrencyId = @inp_quoteCurrencyId,
+		quoteAmount = @inp_quoteAmount,
+		estimatedTurnaround = @inp_estimatedTurnaround,
+		useDefaultLocation = @inp_useDefaultLocation,
+		overrideAddressLine1 = @inp_overrideAddressLine1,
+		overrideAddressLine2 = @inp_overrideAddressLine2,
+		overrideCountryId = @inp_overrideCountryId,
+		overridePostCode = @inp_overridePostCode
+		WHERE quoteId = @inp_quoteId;
 	
 	SET @upd_rows = @@ROWCOUNT;
 
