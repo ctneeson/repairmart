@@ -1,13 +1,6 @@
 USE [RepairMart]
 GO
 
-IF EXISTS(SELECT 1 FROM sys.objects WHERE OBJECT_ID = OBJECT_ID('quotes_deliveryMethod'))
-BEGIN
-    ALTER TABLE quotes_deliveryMethod DROP CONSTRAINT IF EXISTS FK_QuoteDeliveryMethod_QuoteID;
-    ALTER TABLE quotes_deliveryMethod DROP CONSTRAINT IF EXISTS FK_QuoteDeliveryMethod_DeliveryMethodID;
-END
-GO
-
 IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'quotes_deliveryMethod' AND TABLE_SCHEMA = 'dbo')
    DROP TABLE [dbo].[quotes_deliveryMethod];
 GO
