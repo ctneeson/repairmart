@@ -1,14 +1,6 @@
 USE [RepairMart]
 GO
 
-IF EXISTS(SELECT 1 FROM sys.objects WHERE OBJECT_ID = OBJECT_ID('orders_feedback'))
-BEGIN
-    ALTER TABLE orders_feedback DROP CONSTRAINT IF EXISTS FK_OrdersFeedback_OrderID;
-    ALTER TABLE orders_feedback DROP CONSTRAINT IF EXISTS FK_OrdersFeedback_UserID;
-    ALTER TABLE orders_feedback DROP CONSTRAINT IF EXISTS FK_OrdersFeedback_FeedbackTypeID;
-END
-GO
-
 IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'orders_feedback' AND TABLE_SCHEMA = 'dbo')
    DROP TABLE [dbo].[orders_feedback];
 GO

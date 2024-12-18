@@ -1,14 +1,6 @@
 USE [RepairMart]
 GO
 
-IF EXISTS(SELECT 1 FROM sys.objects WHERE OBJECT_ID = OBJECT_ID('listings'))
-BEGIN
-    ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_UserID;
-    ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_ListingStatusID;
-    ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_OverrideCountryID;
-END
-GO
-
 IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'listings' AND TABLE_SCHEMA = 'dbo')
    DROP TABLE [dbo].[listings];
 GO
