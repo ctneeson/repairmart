@@ -35,6 +35,7 @@ BEGIN
     ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_UserID;
     ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_ListingStatusID;
     ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_OverrideCountryID;
+	ALTER TABLE listings DROP CONSTRAINT IF EXISTS FK_Listings_ListingBudgetCurrencyID;
 END
 GO
 

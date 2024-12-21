@@ -12,8 +12,8 @@ CREATE TABLE dbo.emails (
 	quoteId int, -- FOREIGN KEY
 	orderId int, -- FOREIGN KEY
 	emailSubject varchar(255),
-	emailTimeStamp datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	emailContent varchar(max),
+	runId int NOT NULL,
 	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	ACTIVE bit NOT NULL DEFAULT 1
