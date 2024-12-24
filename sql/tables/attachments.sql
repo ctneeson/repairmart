@@ -8,7 +8,8 @@ GO
 /* Create a table. */
 CREATE TABLE dbo.attachments (
     attachmentId INT IDENTITY(1,1) PRIMARY KEY,
-    attachmentData VARBINARY(MAX),
+    attachmentUrl VARCHAR(1000),
+	runId int,
 	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	ACTIVE bit NOT NULL DEFAULT 1
