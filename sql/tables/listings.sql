@@ -18,6 +18,7 @@ CREATE TABLE dbo.listings (
 	overrideCountryId int, --FOREIGN KEY
 	overridePostCode varchar(50),
 	listingExpiry int NOT NULL,
+	runId int NOT NULL,
 	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	ACTIVE bit NOT NULL DEFAULT 1

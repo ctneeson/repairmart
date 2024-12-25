@@ -11,6 +11,7 @@ CREATE TABLE dbo.listings_attachments (
 	attachmentId int NOT NULL, -- FOREIGN KEY
 	attachmentIsPrimary bit NOT NULL DEFAULT 0,
 	attachmentOrder int NOT NULL,
+	runId int NOT NULL,
 	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	ACTIVE bit NOT NULL DEFAULT 1

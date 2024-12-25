@@ -11,8 +11,7 @@ CREATE TABLE dbo.attachments (
     attachmentUrl VARCHAR(1000),
 	runId int,
 	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	ACTIVE bit NOT NULL DEFAULT 1
+	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 
 /* Read the file image and insert it to the as a BLOB  */

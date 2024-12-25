@@ -13,7 +13,10 @@ CREATE PROCEDURE sp_postNewEmail
    @inp_emailRecipients varchar(100),
    @inp_emailSubject varchar(255),
    @inp_emailContent varchar(max),
+   @inp_emailAttachmentList varchar(5000),
    @ins_rows INT OUTPUT,
+   @ins_rows_recipients INT OUTPUT,
+   @ins_rows_attachments INT OUTPUT,
    @ERR_MESSAGE VARCHAR(500) OUTPUT,
    @ERR_IND BIT OUTPUT,
    @out_runId INT OUTPUT,
@@ -85,7 +88,7 @@ BEGIN
 		WHILE (@recipientIterator <= (SELECT MAX(rowNum) FROM #temp_emailRecipients))
 		BEGIN
 			IF NOT EXISTS (SELECT 1 FROM #temp_emailRecipients
-			               WHERE rowNum = @iterator
+			               WHERE rowNum = @recipientIterator
 						   AND emailRecipient LIKE '%[^0-9]%')
 			BEGIN
 				SET @ERR_MESSAGE = 'Invalid input: emailRecipients. Recipient IDs must be positive integers.';
@@ -96,15 +99,47 @@ BEGIN
 			                    WHERE ACTIVE = 1
 								AND userId = (SELECT CAST(emailRecipient AS INT)
 								              FROM #temp_emailRecipients
-			                                  WHERE rowNum = @iterator))
+			                                  WHERE rowNum = @recipientIterator))
 			BEGIN
 				SET @ERR_MESSAGE = 'Invalid input: emailRecipients. A Recipient ID could not be found in list of active users.';
 				SET @ERR_IND = 1;
 				BREAK;
 			END
-		SET @iterator = @iterator + 1;
+		SET @recipientIterator = @recipientIterator + 1;
 		END
+	END
+	ELSE IF LEN(@inp_emailAttachmentList) > 5000
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid input: emailAttachmentList. Length must not be greater than 5000 characters.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_emailAttachmentList) <= 5000
+	BEGIN
+		-- Validate email attachments in ;-delimited list
+		DECLARE @attachmentIterator INT;
+		SET @attachmentIterator = 1;
+		IF OBJECT_ID('tempdb..#temp_emailAttachments') IS NOT NULL
+		DROP TABLE #temp_emailAttachments;
+		
+		CREATE TABLE #temp_emailAttachments (
+			attachmentUrl VARCHAR(1000),
+			rowNum INT
+		);
+		INSERT INTO #temp_emailAttachments (attachmentUrl, rowNum)
+		SELECT value, ordinal FROM STRING_SPLIT(@inp_emailAttachmentList,';',1);
 
+		WHILE (@attachmentIterator <= (SELECT MAX(rowNum) FROM #temp_emailAttachments))
+		BEGIN
+			IF NOT EXISTS (SELECT 1 FROM #temp_emailAttachments
+			               WHERE rowNum = @attachmentIterator
+						   AND LEN(REPLACE(REPLACE(attachmentUrl,' ',''),'	',''))>0)
+			BEGIN
+				SET @ERR_MESSAGE = 'Invalid input: emailAttachments. Attachment URLs must not be empty.';
+				SET @ERR_IND = 1;
+				BREAK;
+			END
+		SET @attachmentIterator = @attachmentIterator + 1;
+		END
 	END
 
 	IF @ERR_IND = 1
@@ -136,12 +171,34 @@ BEGIN
 		WHILE (@recipientIterator <= (SELECT MAX(rowNum) FROM #temp_emailRecipients))
 		BEGIN
 			INSERT INTO emails_recipients(emailId, recipientUserId, runId)
-			SELECT @out_emailId,
-			       CAST(emailRecipient FROM #temp_emailRecipients WHERE rowNum = @recipientIterator),
-				   @out_runId;
+			SELECT @out_emailId, CAST(emailRecipient AS int), @out_runId
+			FROM #temp_emailRecipients WHERE rowNum = @recipientIterator;
 
 			SET @recipientIterator = @recipientIterator + 1;
 		END
+		SET @ins_rows_recipients = (SELECT COUNT(*) FROM emails_recipients
+		                             WHERE emailId = @out_emailId
+									 AND runId = @out_runId);
+
+		SET @attachmentIterator = 1;
+		WHILE (@attachmentIterator <= (SELECT MAX(rowNum) FROM #temp_emailAttachments))
+		BEGIN
+			DECLARE @out_attachmentId int;
+
+			INSERT INTO attachments(attachmentUrl, runId)
+			SELECT attachmentUrl, @out_runId
+			FROM #temp_emailAttachments WHERE rowNum = @attachmentIterator;
+
+			SET @out_attachmentId = (SELECT MAX(attachmentId) FROM attachments
+			                         WHERE runId = @out_runId);
+
+			INSERT INTO emails_attachments(emailId, attachmentId, runId)
+			VALUES(@out_emailId, @out_attachmentId, @out_runId);
+
+			SET @attachmentIterator = @attachmentIterator + 1;
+		END
+		SET @ins_rows_attachments = (SELECT COUNT(*) FROM attachments
+		                             WHERE runId = @out_runId);
 
 		COMMIT TRANSACTION;
 	END TRY
