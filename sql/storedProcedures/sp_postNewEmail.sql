@@ -165,7 +165,7 @@ BEGIN
 				@out_runId);
 	
 		SET @ins_rows = @@ROWCOUNT;
-		SET @out_emailId = (SELECT emailId from emails WHERE runId = @out_runId);
+		SET @out_emailId = (SELECT MAX(emailId) from emails WHERE runId = @out_runId);
 
 		SET @recipientIterator = 1;
 		WHILE (@recipientIterator <= (SELECT MAX(rowNum) FROM #temp_emailRecipients))
