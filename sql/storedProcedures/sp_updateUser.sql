@@ -7,6 +7,7 @@ GO
 
 CREATE PROCEDURE sp_updateUser
    @inp_userId int,
+   @inp_businessName VARCHAR(255),
    @inp_firstName VARCHAR(255),
    @inp_lastName VARCHAR(255),
    @inp_emailAddress VARCHAR(500),
@@ -26,14 +27,25 @@ BEGIN
     SET @ERR_IND = 0;
 	
 	IF (@inp_userId IS NULL
-	    OR @inp_firstName IS NULL
-	    OR @inp_lastName IS NULL
 		OR @inp_emailAddress IS NULL
 		OR @inp_userPassword IS NULL
 		OR @inp_accountTypeId IS NULL
 	)
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input provided: firstName, lastName, emailAddress, userPassword and accountTypeId must not be null.';
+		SET @ERR_MESSAGE = 'Invalid input provided: emailAddress, userPassword and accountTypeId must not be null.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF (@inp_accountTypeId IN (SELECT accountTypeId FROM accountType WHERE accountTypeName = 'Business' AND ACTIVE = 1)
+	         AND LEN(REPLACE(REPLACE(@inp_businessName,' ', ''),'	','')) = 0)
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid input provided: businessName must be populated for Business users.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF (@inp_accountTypeId IN (SELECT accountTypeId FROM accountType WHERE accountTypeName = 'Personal' AND ACTIVE = 1)
+	         AND (LEN(REPLACE(REPLACE(@inp_firstName,' ', ''),'	','')) = 0
+			      OR LEN(REPLACE(REPLACE(@inp_lastName,' ', ''),'	','')) = 0))
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid input provided: firstName and lastName must be populated for Personal users.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_userId NOT IN (SELECT userId FROM users WHERE ACTIVE = 1))

@@ -6,6 +6,7 @@ IF OBJECT_ID('sp_postNewUser', 'P') IS NOT NULL
 GO
 
 CREATE PROCEDURE sp_postNewUser
+   @inp_businessName VARCHAR(255),
    @inp_firstName VARCHAR(255),
    @inp_lastName VARCHAR(255),
    @inp_emailAddress VARCHAR(500),
@@ -23,14 +24,12 @@ BEGIN
     SET NOCOUNT ON;
     SET @ERR_IND = 0;
 
-	IF (@inp_firstName IS NULL
-	    OR @inp_lastName IS NULL
-		OR @inp_emailAddress IS NULL
+	IF (@inp_emailAddress IS NULL
 		OR @inp_userPassword IS NULL
 		OR @inp_accountTypeId IS NULL
 		)
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input(s). firstName, lastName, emailAddress and userPassword must not be null.';
+		SET @ERR_MESSAGE = 'Invalid input(s). emailAddress, userPassword and accountTypeId must not be null.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_emailAddress IS NOT NULL
@@ -42,7 +41,20 @@ BEGIN
 	ELSE IF (@inp_accountTypeId IS NOT NULL
 	         AND (SELECT COUNT(accountTypeId) FROM accountType WHERE accountTypeId = @inp_accountTypeId) = 0)
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid role type provided';
+		SET @ERR_MESSAGE = 'Invalid account type provided';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF (@inp_accountTypeId IN (SELECT accountTypeId FROM accountType WHERE accountTypeName = 'Business' AND ACTIVE = 1)
+	         AND LEN(REPLACE(REPLACE(@inp_businessName,' ', ''),'	','')) = 0)
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid input provided: businessName must be populated for Business users.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF (@inp_accountTypeId IN (SELECT accountTypeId FROM accountType WHERE accountTypeName = 'Personal' AND ACTIVE = 1)
+	         AND (LEN(REPLACE(REPLACE(@inp_firstName,' ', ''),'	','')) = 0
+			      OR LEN(REPLACE(REPLACE(@inp_lastName,' ', ''),'	','')) = 0))
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid input provided: firstName and lastName must be populated for Personal users.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF NOT (@inp_emailAddress LIKE '%_@__%.__%')
@@ -78,9 +90,10 @@ BEGIN
 		INSERT INTO #temp_userenc (emailAddress, salt, aes_key)
 		VALUES (@inp_emailAddress, LEFT(NEWID(), 8), LEFT(NEWID(), 50));
 	
-		INSERT INTO users(firstName, lastName, userPassword, emailAddress,
+		INSERT INTO users(businessName, firstName, lastName, userPassword, emailAddress,
 						  addressLine1, addressLine2, countryId, postCode, accountTypeId)
-		SELECT @inp_firstName,
+		SELECT @inp_businessName,
+		    @inp_firstName,
 			@inp_lastName,
 			ENCRYPTBYPASSPHRASE(ue.aes_key, @inp_emailAddress + @inp_userPassword + ue.salt),
 			@inp_emailAddress,

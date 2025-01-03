@@ -13,6 +13,6 @@ CREATE TABLE dbo.accountType (
 	ACTIVE bit NOT NULL DEFAULT 1
 );
 
-INSERT INTO accountType (accountTypeName) VALUES ('Customer');
-INSERT INTO accountType (accountTypeName) VALUES ('Repair Specialist');
+INSERT INTO accountType (accountTypeName) VALUES ('Personal');
+INSERT INTO accountType (accountTypeName) VALUES ('Business');
 INSERT INTO accountType (accountTypeName) VALUES ('Administrator');
