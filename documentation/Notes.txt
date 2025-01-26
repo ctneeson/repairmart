@@ -1,0 +1,11 @@
+- Image storage
+https://www.youtube.com/watch?v=XnNbizvb1uM
+
+- Which database?
+https://www.youtube.com/watch?v=7nBVXutEgIA
+
+- Product categories
+https://www.asinspotlight.com/amz-categories-list-csv
+
+- Laravel Blade
+https://abu-sayed.medium.com/laravel-blade-vs-livewire-vs-inertia-a-comprehensive-guide-for-developers-702d91af601c

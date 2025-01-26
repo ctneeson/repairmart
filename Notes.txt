@@ -1,0 +1,20 @@
+- Image storage
+https://www.youtube.com/watch?v=XnNbizvb1uM
+
+- Which database?
+https://www.youtube.com/watch?v=7nBVXutEgIA
+
+- Product categories
+https://www.asinspotlight.com/amz-categories-list-csv
+
+- Laravel Blade
+https://abu-sayed.medium.com/laravel-blade-vs-livewire-vs-inertia-a-comprehensive-guide-for-developers-702d91af601c
+
+- Laravel Mail
+https://sendlayer.com/blog/how-to-send-email-in-laravel-with-smtp/
+
+https://dev.to/mr_steelze/setting-up-a-laravel-project-with-sql-server-and-xampp-wamp-on-windows-3n7k
+https://www.sqlservertutorial.net/php-sql-server/php-connect-to-sql-server/
+https://dev.to/retinqdon/setting-up-laravel-with-sql-server-and-laragon-on-windows-2cp9
+https://bobcares.com/blog/sql-server-connection-failed-sqlstate-08001/
+https://www.mssqltips.com/sqlservertip/7292/sql-ssms-ports/
