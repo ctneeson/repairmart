@@ -9,9 +9,12 @@
     <!-- <p>Welcome, {{$userName}}</p> -->
     <img src="/img/soldering-iron-icon.png" alt="RepairMart Logo" class="center">
     <div>
-        <div class="home_search">Search</div>
-        <input type="text" placeholder="Enter text..">
-        <a href="#search">Go</a>
+        <div class="home_search">
+            <span>Search</span>
+            <input class="home_search_textinput" type="text" placeholder="Enter text..">
+            <button class="home_search_button">Go</button>
+        </div>
+        <a href="/listings/create" class="home_link">Create Listing</a>
     </div>
     <!-- @if ($loggedIn == true)
         <p>You are logged in.</p>

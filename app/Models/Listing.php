@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Listing extends Model
 {
+    protected $primaryKey = 'listingId';
     use HasFactory;
 }

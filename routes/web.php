@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// New additions
+///////////////////
+// New additions //
+///////////////////
 
 Route::get('/home', function () {
     $beatles = [
@@ -49,7 +52,7 @@ Route::get('/home', function () {
     return view('home', $user, ['name' => request('name')]);
 });
 
-use App\Http\Controllers\ListingController;
 Route::get('/listings', [ListingController::class, 'index']);
-
+Route::get('/listings/create', [ListingController::class, 'create']);
+Route::post('/listings', [ListingController::class,'store']);
 Route::get('/listings/{id}', [ListingController::class, 'show']);

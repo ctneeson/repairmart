@@ -11,6 +11,7 @@ CREATE TABLE dbo.listings (
 	listingStatusId int NOT NULL, -- FOREIGN KEY
 	manufacturerId int NOT NULL, -- FOREIGN KEY
 	listingTitle nvarchar(500) NOT NULL,
+	listingDetail nvarchar(4000) NOT NULL,
 	listingBudgetCurrencyId int, -- FOREIGN KEY
 	listingBudget decimal(10,2),
 	useDefaultLocation bit NOT NULL DEFAULT 1,
