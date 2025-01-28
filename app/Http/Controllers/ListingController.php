@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\Listing;
 use Illuminate\Support\Facades\Log;
 
@@ -46,8 +46,59 @@ class ListingController extends Controller
         // $listing->listingStatusId = 1;
         // $listing->save();
 
-        // Log the entire request data
-        Log::info('Request Data: ' . json_encode($request->all()));
-        return redirect('/home');
+        $category = $request->input('category[]');
+
+        Log::info('Stored Procedure Input:', $category);
+
+/*        // Define the input parameters
+        $params = [
+            $request->input('userId'),
+            $request->input('listingStatusId'),
+            $request->input('manufacturerId'),
+            $request->input('listingTitle'),
+            $request->input('listingBudgetCurrencyId'),
+            $request->input('listingBudget'),
+            $request->input('useDefaultLocation'),
+            $request->input('overrideAddressLine1'),
+            $request->input('overrideAddressLine2'),
+            $request->input('overrideCountryId'),
+            $request->input('overridePostCode'),
+            $request->input('listingExpiry'),
+            $request->input('attachmentUrlList'),
+            $request->input('attachmentHashList'),
+            $request->input('attachmentOrderList'),
+            $request->input('productClassificationIdList'),
+        ];
+
+        // Define the output parameters
+        $outputParams = [
+            '@ins_rows' => 0,
+            '@ins_rows_attachments' => 0,
+            '@ins_rows_classifications' => 0,
+            '@ERR_MESSAGE' => '',
+            '@ERR_IND' => 0,
+            '@out_runId' => 0,
+            '@out_listingId' => 0,
+        ];
+
+        // Prepare the SQL statement with placeholders for input and output parameters
+        $sql = 'EXEC sp_postNewListing ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                @ins_rows OUTPUT, @ins_rows_attachments OUTPUT, @ins_rows_classifications OUTPUT, 
+                @ERR_MESSAGE OUTPUT, @ERR_IND OUTPUT, @out_runId OUTPUT, @out_listingId OUTPUT';
+
+        // Execute the stored procedure
+        $result = DB::statement($sql, array_merge($params, array_values($outputParams)));
+
+        // Log the output parameters
+        Log::info('Stored Procedure Output:', $outputParams);
+
+        // Handle the output parameters as needed
+        if ($outputParams['@ERR_IND'] == 1) {
+            return response()->json(['error' => $outputParams['@ERR_MESSAGE']], 400);
+        }
+*/
+        // return redirect('/home')->with('success', 'Listing created successfully');
+        // return redirect('/listings')->with('mssg', 'Listing created successfully');
+        return view('listings.success', ['message' => 'Listing created successfully', 'redirectUrl' => '/listings']);
     }
 }

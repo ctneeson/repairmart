@@ -12,6 +12,6 @@
     <p>Budget: {{ $listing->listingBudgetCurrencyId }} {{ $listing->listingBudget }}</p>
     <p>Created at: {{ $listing->DATE_INSERTED }}</p>
     <p>Created by: {{ $listing->userId }}</p>
-    <a href="/listings" class="back">Back to Listings</a>
+    <a href="/home" class="back">Back to Listings</a>
 </div>
 @endsection

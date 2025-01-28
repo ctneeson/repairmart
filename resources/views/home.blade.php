@@ -1,5 +1,9 @@
 @extends('layouts.layout')
 
+@section('head')
+<title>Home</title>
+@endsection
+
 @section('title')
     <h1>RepairMart</h1>
     <p>Welcome to RepairMart, {{$name}}.</p>
