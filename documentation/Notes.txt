@@ -9,3 +9,9 @@ https://www.asinspotlight.com/amz-categories-list-csv
 
 - Laravel Blade
 https://abu-sayed.medium.com/laravel-blade-vs-livewire-vs-inertia-a-comprehensive-guide-for-developers-702d91af601c
+
+- GCP
+https://dev.to/bhaidar/guide-for-deploying-php-laravel-apps-on-the-google-cloud-platform-1ccl
+
+- Laravel Sail
+https://dev.to/omaromp2/install-microsoft-sql-server-php-drivers-in-laravel-sail-hfn
