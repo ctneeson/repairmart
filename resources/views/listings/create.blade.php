@@ -111,14 +111,9 @@
             <option value="GBP">GBP</option>
             <option value="USD">USD</option>
         </select>
+        <input type="number" id="budget" name="budget" min="0" value="0" step=".01">
         <div id="product-types"></div>
         <button type="button" id="add-product-type">Add extra product type</button>
-        <!-- <datalist id="currency" name="currency">
-            <option>EUR</option>
-            <option>GBP</option>
-            <option>USD</option>
-        </datalist> -->
-        <input type="number" id="budget" name="budget" min="0" value="0" step=".01">
         <label for="detail">Detail:</label>
         <textarea id="detail" name="detail"></textarea>
         <input type="submit" value="Create Listing">
