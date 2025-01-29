@@ -15,3 +15,6 @@ https://dev.to/bhaidar/guide-for-deploying-php-laravel-apps-on-the-google-cloud-
 
 - Laravel Sail
 https://dev.to/omaromp2/install-microsoft-sql-server-php-drivers-in-laravel-sail-hfn
+
+- API setup
+https://dev.to/iankumu/how-to-build-a-rest-api-with-laravel-a-beginners-guide-2fjm
