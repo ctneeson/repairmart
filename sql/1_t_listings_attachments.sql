@@ -11,6 +11,6 @@ CREATE TABLE dbo.listings_attachments (
 	attachmentId int NOT NULL, -- FOREIGN KEY
 	attachmentOrder int NOT NULL,
 	runId int NOT NULL,
-	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

@@ -11,6 +11,6 @@ CREATE TABLE dbo.attachments (
     attachmentUrl nvarchar(1000) UNIQUE,
     hashValue nvarchar(1000),
 	runId int,
-	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 )

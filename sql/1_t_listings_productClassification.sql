@@ -10,6 +10,6 @@ CREATE TABLE dbo.listings_productClassification (
 	listingId int NOT NULL, -- FOREIGN KEY
 	productClassificationId int NOT NULL, -- FOREIGN KEY
 	runId int NOT NULL,
-	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

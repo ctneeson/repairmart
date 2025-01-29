@@ -10,5 +10,5 @@ CREATE TABLE dbo.emails_recipients (
 	emailId int NOT NULL, -- FOREIGN KEY
 	recipientUserId int NOT NULL, -- FOREIGN KEY
 	runId int NOT NULL,
-	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

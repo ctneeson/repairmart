@@ -56,7 +56,7 @@ BEGIN
 	 CASE WHEN l.useDefaultLocation = 0 THEN l.overrideCountryId ELSE 'User Country ID' END AS listingCountryId,
 	 co.countryName,
 	 CASE WHEN l.useDefaultLocation = 0 THEN l.overridePostCode ELSE 'User PostCode' END AS listingPostCode,
-	 DATEADD(day,l.listingExpiry,l.DATE_INSERTED) AS listingExpiryDate
+	 DATEADD(day,l.listingExpiry,l.created_at) AS listingExpiryDate
     FROM listings l
 	JOIN users u ON l.userId = u.id
 	JOIN listingStatus ls ON l.listingStatusId = ls.listingStatusId AND ls.ACTIVE = 1

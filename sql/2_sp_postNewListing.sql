@@ -10,6 +10,7 @@ CREATE PROCEDURE sp_postNewListing
    @inp_listingStatusId int,
    @inp_manufacturerId int,
    @inp_listingTitle nvarchar(500),
+   @inp_listingDetail nvarchar(4000),
    @inp_listingBudgetCurrencyId int,
    @inp_listingBudget decimal(10,2),
    @inp_useDefaultLocation bit,
@@ -69,6 +70,16 @@ BEGIN
 	         AND (SELECT COUNT(*) FROM manufacturers WHERE manufacturerId = @inp_manufacturerId AND ACTIVE = 1) = 0)
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid manufacturerId. No active manufacturer could be found for the manufacturerId provided.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_listingTitle) > 500
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid listingTitle length. listingTitle cannot be longer than 500 characters.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_listingDetail) > 4000
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid listingDetail length. listingDetail cannot be longer than 4000 characters.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_listingBudgetCurrencyId IS NOT NULL
@@ -246,13 +257,14 @@ BEGIN
 		SET @out_runId = (SELECT MAX(runId) from runIds WHERE processName = 'sp_postNewListing' AND UPDATED_BY = @inp_userId);
 
 		-- insert listing
-		INSERT INTO listings(userId, listingStatusId, manufacturerId, listingTitle, listingBudgetCurrencyId, listingBudget,
-		                     useDefaultLocation, overrideAddressLine1, overrideAddressLine2, overrideCountryId,
+		INSERT INTO listings(userId, listingStatusId, manufacturerId, listingTitle, listingDetail, listingBudgetCurrencyId,
+		                     listingBudget, useDefaultLocation, overrideAddressLine1, overrideAddressLine2, overrideCountryId,
 							 overridePostCode, listingExpiry, runId)
 		VALUES (@inp_userId,
 		        @inp_listingStatusId,
 				@inp_manufacturerId,
 				@inp_listingTitle,
+				@inp_listingDetail,
 				@inp_listingBudgetCurrencyId,
 				@inp_listingBudget,
                 @inp_useDefaultLocation,

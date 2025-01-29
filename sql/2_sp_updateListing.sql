@@ -11,6 +11,7 @@ CREATE PROCEDURE sp_updateListing
    @inp_listingStatusId int,
    @inp_manufacturerId int,
    @inp_listingTitle nvarchar(500),
+   @inp_listingDetail nvarchar(4000),
    @inp_listingBudgetCurrencyId int,
    @inp_listingBudget decimal(10,2),
    @inp_useDefaultLocation bit,
@@ -76,6 +77,16 @@ BEGIN
 	         AND (SELECT COUNT(*) FROM manufacturers WHERE manufacturerId = @inp_manufacturerId AND ACTIVE = 1) = 0)
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid manufacturerId. No active manufacturer could be found for the manufacturerId provided.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_listingTitle) > 500
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid listingTitle length. listingTitle cannot be longer than 500 characters.';
+		SET @ERR_IND = 1;
+	END
+	ELSE IF LEN(@inp_listingDetail) > 4000
+	BEGIN
+		SET @ERR_MESSAGE = 'Invalid listingDetail length. listingDetail cannot be longer than 4000 characters.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_listingBudgetCurrencyId IS NOT NULL
@@ -235,6 +246,7 @@ BEGIN
              AND @inp_listingStatusId = (SELECT listingStatusId from listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
              AND @inp_manufacturerId = (SELECT manufacturerId from listings WHERE manufacturerId = @inp_manufacturerId AND ACTIVE = 1)
              AND @inp_listingTitle = (SELECT listingTitle from listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
+             AND @inp_listingDetail = (SELECT listingDetail from listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
              AND @inp_listingBudgetCurrencyId = (SELECT listingBudgetCurrencyId from listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
              AND @inp_listingBudget = (SELECT listingBudget from listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
              AND @inp_useDefaultLocation = (SELECT useDefaultLocation from listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
@@ -275,6 +287,7 @@ BEGIN
 		    listingStatusId  = @inp_listingStatusId,
 		    manufacturerId  = @inp_manufacturerId,
 		    listingTitle = @inp_listingTitle,
+		    listingDetail = @inp_listingDetail,
 		    listingBudgetCurrencyId = @inp_listingBudgetCurrencyId,
 		    listingBudget = @inp_listingBudget,
 		    useDefaultLocation = @inp_useDefaultLocation,

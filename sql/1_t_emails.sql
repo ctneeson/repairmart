@@ -14,7 +14,7 @@ CREATE TABLE dbo.emails (
 	emailSubject nvarchar(255),
 	emailContent nvarchar(max),
 	runId int NOT NULL,
-	DATE_INSERTED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	DATE_UPDATED datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	ACTIVE bit NOT NULL DEFAULT 1
 );
