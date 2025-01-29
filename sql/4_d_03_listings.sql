@@ -2,23 +2,24 @@ DECLARE @RC int
 DECLARE @inp_userId int
 DECLARE @inp_listingStatusId int
 DECLARE @inp_manufacturerId int
-DECLARE @inp_listingTitle varchar(500)
+DECLARE @inp_listingTitle nvarchar(500)
+DECLARE @inp_listingDetail nvarchar(4000)
 DECLARE @inp_listingBudgetCurrencyId int
 DECLARE @inp_listingBudget decimal(10,2)
 DECLARE @inp_useDefaultLocation bit
-DECLARE @inp_overrideAddressLine1 varchar(500)
-DECLARE @inp_overrideAddressLine2 varchar(500)
+DECLARE @inp_overrideAddressLine1 nvarchar(500)
+DECLARE @inp_overrideAddressLine2 nvarchar(500)
 DECLARE @inp_overrideCountryId int
-DECLARE @inp_overridePostCode varchar(50)
+DECLARE @inp_overridePostCode nvarchar(50)
 DECLARE @inp_listingExpiry int
-DECLARE @inp_attachmentUrlList varchar(5000)
-DECLARE @inp_attachmentHashList varchar(5000)
-DECLARE @inp_attachmentOrderList varchar(100)
-DECLARE @inp_productClassificationIdList varchar(20)
+DECLARE @inp_attachmentUrlList nvarchar(4000)
+DECLARE @inp_attachmentHashList nvarchar(4000)
+DECLARE @inp_attachmentOrderList nvarchar(100)
+DECLARE @inp_productClassificationIdList nvarchar(20)
 DECLARE @ins_rows INT
 DECLARE @ins_rows_attachments INT
 DECLARE @ins_rows_classifications INT
-DECLARE @ERR_MESSAGE VARCHAR(500)
+DECLARE @ERR_MESSAGE nvarchar(500)
 DECLARE @ERR_IND BIT
 DECLARE @out_runId int
 DECLARE @out_listingId INT
@@ -29,6 +30,7 @@ EXECUTE @RC = [dbo].[sp_postNewListing]
    1, --listingStatusId (Open)
    2, --manufacturerId (Acer)
    'Acer Chromebook 314 CB314-4H - screen broken', --listingTitle
+   'Detail Detail Detail Detail Detail', --listingDetail
    45, --listingBudgetCurrencyId (GBP)
    75.00, --listingBudget
    1, --useDefaultLocation
