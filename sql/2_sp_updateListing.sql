@@ -56,25 +56,25 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_listingId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM listings WHERE listingId = @inp_listingId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM listings WHERE listingId = @inp_listingId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid listingId. No active listing could be found for the listingId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_userId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM users WHERE userId = @inp_userId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM users WHERE id = @inp_userId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid userId. No active user could be found for the userId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_listingStatusId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM listingStatus WHERE listingStatusId = @inp_listingStatusId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM listingStatus WHERE listingStatusId = @inp_listingStatusId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid listingStatusId. No active status could be found for the listingStatusId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_manufacturerId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM manufacturers WHERE manufacturerId = @inp_manufacturerId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM manufacturers WHERE manufacturerId = @inp_manufacturerId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid manufacturerId. No active manufacturer could be found for the manufacturerId provided.';
 		SET @ERR_IND = 1;
@@ -90,13 +90,13 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_listingBudgetCurrencyId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM currency WHERE currencyId = @inp_listingBudgetCurrencyId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM currency WHERE currencyId = @inp_listingBudgetCurrencyId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid listingBudgetCurrencyId. No active currency could be found for the listingBudgetCurrencyId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_overrideCountryId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM country WHERE countryId = @inp_overrideCountryId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM country WHERE countryId = @inp_overrideCountryId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid overrideCountryId. No active country could be found for the overrideCountryId provided.';
 		SET @ERR_IND = 1;

@@ -57,13 +57,13 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_quote_deliveryMethodId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM quotes_deliveryMethod WHERE quote_deliveryMethodId = @inp_quote_deliveryMethodId) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM quotes_deliveryMethod WHERE quote_deliveryMethodId = @inp_quote_deliveryMethodId))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid quote_deliveryMethodId. No active quote could be found with the quote_deliveryMethodId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_orderStatusId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM orderStatus WHERE orderStatusId = @inp_orderStatusId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM orderStatus WHERE orderStatusId = @inp_orderStatusId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid orderStatusId. No active orderStatus could be found with the orderStatusId provided.';
 		SET @ERR_IND = 1;

@@ -55,31 +55,31 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_userId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM users WHERE userId = @inp_userId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM users WHERE id = @inp_userId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid userId. No active user could be found for the userId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_listingId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM listings WHERE listingId = @inp_listingId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM listings WHERE listingId = @inp_listingId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid listingId. No active listing could be found for the listingId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_quoteStatusId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM quoteStatus WHERE quoteStatusId = @inp_quoteStatusId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM quoteStatus WHERE quoteStatusId = @inp_quoteStatusId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid quoteStatusId. No active status could be found for the quoteStatusId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_quoteCurrencyId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM currency WHERE currencyId = @inp_quoteCurrencyId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM currency WHERE currencyId = @inp_quoteCurrencyId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid quoteCurrencyId. No active currency could be found for the quoteCurrencyId provided.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_overrideCountryId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM country WHERE countryId = @inp_overrideCountryId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM country WHERE countryId = @inp_overrideCountryId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid overrideCountryId. No active country could be found for the overrideCountryId provided.';
 		SET @ERR_IND = 1;

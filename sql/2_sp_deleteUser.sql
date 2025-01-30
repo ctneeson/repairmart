@@ -23,7 +23,7 @@ BEGIN
 		SET @ERR_MESSAGE = 'Invalid input provided: userId and emailAddress must not be null.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_userId NOT IN (SELECT userId FROM users WHERE ACTIVE = 1))
+	ELSE IF (@inp_userId NOT IN (SELECT id FROM users WHERE ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid User ID provided';
 		SET @ERR_IND = 1;
@@ -33,7 +33,7 @@ BEGIN
 		SET @ERR_MESSAGE = 'User ID has already been deactivated.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_emailAddress <> (SELECT emailAddress FROM users WHERE userId = @inp_userId AND ACTIVE = 1))
+	ELSE IF (@inp_emailAddress <> (SELECT emailAddress FROM users WHERE id = @inp_userId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid emailAddress provided';
 		SET @ERR_IND = 1;
@@ -54,7 +54,7 @@ BEGIN
 		SET @out_runId = (SELECT MAX(runId) from runIds WHERE processName = 'sp_deleteUser' AND UPDATED_BY = @inp_userId);
 
 		UPDATE users
-		SET ACTIVE = 0 WHERE userId = @inp_userId AND emailAddress = @inp_emailAddress;
+		SET ACTIVE = 0 WHERE id = @inp_userId AND emailAddress = @inp_emailAddress;
 		
 		SET @u_updRows = @@ROWCOUNT;
 

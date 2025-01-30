@@ -30,7 +30,7 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_orderStatusId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM orderStatus WHERE orderStatusId = @inp_orderStatusId AND ACTIVE = 1) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM orderStatus WHERE orderStatusId = @inp_orderStatusId AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid orderStatusId. No active orderStatus could be found with the orderStatusId provided.';
 		SET @ERR_IND = 1;

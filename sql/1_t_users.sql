@@ -6,7 +6,7 @@ IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'users' AND
 GO
 
 CREATE TABLE dbo.users (
-	userId int IDENTITY(1,1) PRIMARY KEY,
+	id int IDENTITY(1,1) PRIMARY KEY,
 	businessName nvarchar(255),
 	firstName nvarchar(255),
 	lastName nvarchar(255),

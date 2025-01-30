@@ -43,10 +43,10 @@ BEGIN
         RETURN;
     END
 
-    SELECT u.userId, u.emailAddress, ut.accountTypeId
+    SELECT u.id, u.emailAddress, ut.accountTypeId
     FROM users u
     JOIN accountType ut ON u.accountTypeId = ut.accountTypeId
-	JOIN userAuth ua ON u.userId = ua.userId
+	JOIN userAuth ua ON u.id = ua.userId
     WHERE u.emailAddress = @inp_emailAddress
     AND CAST(DECRYPTBYPASSPHRASE(ua.aes_key, u.userPassword) AS nvarchar(MAX))
 	    = @inp_emailAddress + @inp_userPassword + ua.salt;

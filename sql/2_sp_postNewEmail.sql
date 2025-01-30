@@ -37,7 +37,7 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_emailFromId IS NOT NULL
-	         AND (SELECT COUNT(*) FROM users WHERE userId = @inp_emailFromId AND ACTIVE = 1) = 0)
+	         AND (SELECT COUNT(*) FROM users WHERE id = @inp_emailFromId AND ACTIVE = 1) = 0)
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid input: emailFromId. No active user could be found for the emailFromId provided.';
 		SET @ERR_IND = 1;
@@ -96,11 +96,11 @@ BEGIN
 				SET @ERR_IND = 1;
 				BREAK;
 			END
-			ELSE IF NOT EXISTS (SELECT userId FROM users
+			ELSE IF NOT EXISTS (SELECT 1 FROM users
 			                    WHERE ACTIVE = 1
-								AND userId = (SELECT CAST(emailRecipient AS INT)
-								              FROM #temp_emailRecipients
-			                                  WHERE rowNum = @recipientIterator))
+								AND id = (SELECT CAST(emailRecipient AS INT)
+								          FROM #temp_emailRecipients
+			                              WHERE rowNum = @recipientIterator))
 			BEGIN
 				SET @ERR_MESSAGE = 'Invalid input: emailRecipients. A Recipient ID could not be found in list of active users.';
 				SET @ERR_IND = 1;

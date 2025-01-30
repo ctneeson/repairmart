@@ -7,15 +7,15 @@ GO
 
 CREATE PROCEDURE sp_getRunId
     @processName NVARCHAR(255),
-    @UPDATED_BY INT,
+    @inp_userId INT,
     @out_runId INT OUTPUT
 AS
 BEGIN
     SET NOCOUNT ON;
 
     INSERT INTO runIds(processName, UPDATED_BY)
-    VALUES (@processName, @UPDATED_BY);
+    VALUES (@processName, @inp_userId);
 
-    SET @out_runId = (SELECT MAX(runId) FROM runIds WHERE processName = @processName AND UPDATED_BY = @UPDATED_BY);
+    SET @out_runId = (SELECT MAX(runId) FROM runIds WHERE processName = @processName AND UPDATED_BY = @inp_userId);
 END;
 GO

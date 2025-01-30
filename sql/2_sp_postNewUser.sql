@@ -35,13 +35,13 @@ BEGIN
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_emailAddress IS NOT NULL
-	         AND (SELECT COUNT(userId) FROM users WHERE emailAddress = @inp_emailAddress AND ACTIVE = 1) > 0)
+	         AND EXISTS (SELECT 1 FROM users WHERE emailAddress = @inp_emailAddress AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid email address. A user account with the same address already exists.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_accountTypeId IS NOT NULL
-	         AND (SELECT COUNT(accountTypeId) FROM accountType WHERE accountTypeId = @inp_accountTypeId) = 0)
+	         AND NOT EXISTS (SELECT 1 FROM accountType WHERE accountTypeId = @inp_accountTypeId))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid account type provided';
 		SET @ERR_IND = 1;
@@ -112,16 +112,16 @@ BEGIN
 			@out_runId
 		FROM #temp_userenc ue;
 
-		SET @out_userId = (SELECT MAX(userId) FROM users WHERE runId = @out_runId);
+		SET @out_userId = (SELECT MAX(id) FROM users WHERE runId = @out_runId);
 		SET @ins_rows = @@ROWCOUNT;
 
 		-- Create salt for new user and update password to encrypt it
 		INSERT INTO userAuth(userId, salt, aes_key)
-		SELECT u.userId, ue.salt, ue.aes_key
+		SELECT u.id, ue.salt, ue.aes_key
 		FROM users u
 		JOIN #temp_userenc ue
 		 ON u.emailAddress = ue.emailAddress
-		WHERE u.userId = @out_userId
+		WHERE u.id = @out_userId
 		AND u.emailAddress = @inp_emailAddress;
 
 		COMMIT TRANSACTION;

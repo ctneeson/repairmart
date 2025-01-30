@@ -23,7 +23,7 @@ BEGIN
 		SET @ERR_MESSAGE = 'Invalid input provided: listingId and userId must not be null.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_userId NOT IN (SELECT userId FROM users WHERE ACTIVE = 1))
+	ELSE IF (@inp_userId NOT IN (SELECT id FROM users WHERE ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid input: no active record could be found for the userId provided';
 		SET @ERR_IND = 1;
