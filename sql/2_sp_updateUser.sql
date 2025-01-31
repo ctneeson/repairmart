@@ -10,7 +10,7 @@ CREATE PROCEDURE sp_updateUser
    @inp_businessName nvarchar(255),
    @inp_firstName nvarchar(255),
    @inp_lastName nvarchar(255),
-   @inp_emailAddress nvarchar(500),
+   @inp_email nvarchar(255),
    @inp_userPassword nvarchar(100),
    @inp_addressLine1 nvarchar(500),
    @inp_addressLine2 nvarchar(500),
@@ -28,12 +28,12 @@ BEGIN
     SET @ERR_IND = 0;
 	
 	IF (@inp_userId IS NULL
-		OR @inp_emailAddress IS NULL
+		OR @inp_email IS NULL
 		OR @inp_userPassword IS NULL
 		OR @inp_accountTypeId IS NULL
 	)
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input provided: emailAddress, userPassword and accountTypeId must not be null.';
+		SET @ERR_MESSAGE = 'Invalid input provided: email, userPassword and accountTypeId must not be null.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF EXISTS (SELECT 1 FROM accountType WHERE accountTypeId = @inp_accountTypeId AND accountTypeName = 'Business' AND ACTIVE = 1)
@@ -74,9 +74,9 @@ BEGIN
 		SET @ERR_MESSAGE = 'Invalid name length. firstName and lastName must not exceed 255 characters/';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF LEN(@inp_emailAddress) > 500
+	ELSE IF LEN(@inp_email) > 500
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid emailAddress length. emailAddrss must not exceed 500 characters/';
+		SET @ERR_MESSAGE = 'Invalid email length. emailAddrss must not exceed 500 characters/';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF LEN(@inp_addressLine1) > 500 OR LEN(@inp_addressLine2) > 500
@@ -89,16 +89,16 @@ BEGIN
 		SET @ERR_MESSAGE = 'Invalid postCode length. postCode must not exceed 255 characters/';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF NOT (@inp_emailAddress LIKE '%_@__%.__%')
+	ELSE IF NOT (@inp_email LIKE '%_@__%.__%')
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid email address provided. Email syntax is not correct.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_emailAddress = (SELECT emailAddress FROM users WHERE id = @inp_userId AND ACTIVE = 1)
+	ELSE IF (@inp_email = (SELECT email FROM users WHERE id = @inp_userId AND ACTIVE = 1)
 			AND @inp_firstName = (SELECT firstName FROM users WHERE id = @inp_userId AND ACTIVE = 1)
 			AND @inp_lastName = (SELECT lastName FROM users WHERE id = @inp_userId AND ACTIVE = 1)
 			AND ENCRYPTBYPASSPHRASE((SELECT aes_key FROM userAuth WHERE userId = @inp_userId),
-			                           @inp_emailAddress
+			                           @inp_email
 									 + @inp_userPassword
 									 + (SELECT salt FROM userAuth WHERE userId = @inp_userId)
 									)
@@ -128,11 +128,11 @@ BEGIN
 
 		UPDATE users
 		SET
-		 emailAddress = @inp_emailAddress,    
+		 email = @inp_email,    
 		 firstname = @inp_firstName,    
 		 lastname = @inp_lastName,    
 		 userPassword = ENCRYPTBYPASSPHRASE((SELECT aes_key FROM userAuth WHERE userId = @inp_userId),    
-		                                       @inp_emailAddress    
+		                                       @inp_email    
 		 						            + @inp_userPassword    
 		 						            + (SELECT salt FROM userAuth WHERE userId = @inp_userId)    
 		 								   ),    

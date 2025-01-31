@@ -2,7 +2,7 @@ DECLARE @RC int
 DECLARE @inp_businessName varchar(255)
 DECLARE @inp_firstName varchar(255)
 DECLARE @inp_lastName varchar(255)
-DECLARE @inp_emailAddress varchar(500)
+DECLARE @inp_email varchar(255)
 DECLARE @inp_userPassword varchar(100)
 DECLARE @inp_addressLine1 varchar(500)
 DECLARE @inp_addressLine2 varchar(500)
@@ -20,7 +20,7 @@ EXECUTE @RC = [dbo].[sp_postNewUser]
    'Abatz', --businessName
    NULL, --firstName
    NULL, --lastName
-   'hstennersw@blogger.com', --emailAddress
+   'hstennersw@blogger.com', --email
    'jE3@q|dEqV', --userPassword
    '58 Blackbird Avenue', --addressLine1
    'PO Box 40080', --addressLine2

@@ -9,7 +9,7 @@ CREATE PROCEDURE sp_postNewUser
    @inp_businessName nvarchar(255),
    @inp_firstName nvarchar(255),
    @inp_lastName nvarchar(255),
-   @inp_emailAddress nvarchar(500),
+   @inp_email nvarchar(255),
    @inp_userPassword nvarchar(100),
    @inp_addressLine1 nvarchar(500),
    @inp_addressLine2 nvarchar(500),
@@ -26,16 +26,16 @@ BEGIN
     SET NOCOUNT ON;
     SET @ERR_IND = 0;
 
-	IF (@inp_emailAddress IS NULL
+	IF (@inp_email IS NULL
 		OR @inp_userPassword IS NULL
 		OR @inp_accountTypeId IS NULL
 		)
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input(s). emailAddress, userPassword and accountTypeId must not be null.';
+		SET @ERR_MESSAGE = 'Invalid input(s). email, userPassword and accountTypeId must not be null.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_emailAddress IS NOT NULL
-	         AND EXISTS (SELECT 1 FROM users WHERE emailAddress = @inp_emailAddress AND ACTIVE = 1))
+	ELSE IF (@inp_email IS NOT NULL
+	         AND EXISTS (SELECT 1 FROM users WHERE email = @inp_email AND ACTIVE = 1))
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid email address. A user account with the same address already exists.';
 		SET @ERR_IND = 1;
@@ -59,7 +59,7 @@ BEGIN
 		SET @ERR_MESSAGE = 'Invalid input provided: firstName and lastName must be populated for Personal users.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF NOT (@inp_emailAddress LIKE '%_@__%.__%')
+	ELSE IF NOT (@inp_email LIKE '%_@__%.__%')
 	BEGIN
 		SET @ERR_MESSAGE = 'Invalid email address provided. Email syntax is not correct.';
 		SET @ERR_IND = 1;
@@ -89,21 +89,21 @@ BEGIN
 			DROP TABLE #temp_userenc;
 
 		CREATE TABLE #temp_userenc (
-			emailAddress NVARCHAR(500),
+			email NVARCHAR(500),
 			salt NVARCHAR(8),
 			aes_key NVARCHAR(50)
 		);
 
-		INSERT INTO #temp_userenc (emailAddress, salt, aes_key)
-		VALUES (@inp_emailAddress, LEFT(NEWID(), 8), LEFT(NEWID(), 50));
+		INSERT INTO #temp_userenc (email, salt, aes_key)
+		VALUES (@inp_email, LEFT(NEWID(), 8), LEFT(NEWID(), 50));
 	
-		INSERT INTO users(businessName, firstName, lastName, userPassword, emailAddress,
+		INSERT INTO users(businessName, firstName, lastName, userPassword, email,
 						  addressLine1, addressLine2, countryId, postCode, accountTypeId, runId)
 		SELECT @inp_businessName,
 		    @inp_firstName,
 			@inp_lastName,
-			ENCRYPTBYPASSPHRASE(ue.aes_key, @inp_emailAddress + @inp_userPassword + ue.salt),
-			@inp_emailAddress,
+			ENCRYPTBYPASSPHRASE(ue.aes_key, @inp_email + @inp_userPassword + ue.salt),
+			@inp_email,
 			@inp_addressLine1,
 			@inp_addressLine2,
 			@inp_countryId,
@@ -120,9 +120,9 @@ BEGIN
 		SELECT u.id, ue.salt, ue.aes_key
 		FROM users u
 		JOIN #temp_userenc ue
-		 ON u.emailAddress = ue.emailAddress
+		 ON u.email = ue.email
 		WHERE u.id = @out_userId
-		AND u.emailAddress = @inp_emailAddress;
+		AND u.email = @inp_email;
 
 		COMMIT TRANSACTION;
 	END TRY

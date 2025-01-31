@@ -10,12 +10,12 @@ CREATE TABLE dbo.users (
 	businessName nvarchar(255),
 	firstName nvarchar(255),
 	lastName nvarchar(255),
-	emailAddress nvarchar(500) NOT NULL,
+	email nvarchar(255) NOT NULL,
 	userPassword varbinary(8000) NOT NULL,
 	addressLine1 nvarchar(500),
 	addressLine2 nvarchar(500),
 	countryId int, -- FOREIGN KEY
-	postCode nvarchar(255),
+	postCode nvarchar(50),
 	accountTypeId int NOT NULL, --FOREIGN KEY
 	runId int NOT NULL,
 	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,15 +26,15 @@ CREATE TABLE dbo.users (
 -- Set up System Admin user
 DECLARE @sysSalt NVARCHAR(8) = LEFT(NEWID(), 8);
 DECLARE @sysAESKey NVARCHAR(50) = LEFT(NEWID(), 50);
-DECLARE @sysEmailAddress nvarchar(500) = 'system@repairmart.com';
+DECLARE @sysemail nvarchar(500) = 'system@repairmart.com';
 DECLARE @sysPassword nvarchar(100) = 'password';
 
-INSERT INTO users(businessName, firstName, lastName, userPassword, emailAddress, addressLine1, addressLine2, countryId, postCode, accountTypeId, runId)
+INSERT INTO users(businessName, firstName, lastName, userPassword, email, addressLine1, addressLine2, countryId, postCode, accountTypeId, runId)
 VALUES ('RepairMart', --businessName
         NULL, --firstName
 		NULL, --lastName
-		ENCRYPTBYPASSPHRASE(@sysAESKey, @sysEmailAddress + @sysPassword + @sysSalt), --userPassword
-		'system@repairmart.com', --emailAddress
+		ENCRYPTBYPASSPHRASE(@sysAESKey, @sysemail + @sysPassword + @sysSalt), --userPassword
+		'system@repairmart.com', --email
 		NULL, --addressLine1
 		NULL, --addressLine2
 		NULL, --countryId

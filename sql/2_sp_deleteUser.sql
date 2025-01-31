@@ -7,7 +7,7 @@ GO
 
 CREATE PROCEDURE sp_deleteUser
    @inp_userId int,
-   @inp_emailAddress nvarchar(500),
+   @inp_email nvarchar(255),
    @u_updRows INT OUTPUT,
    @ERR_MESSAGE nvarchar(500) OUTPUT,
    @ERR_IND BIT OUTPUT,
@@ -18,9 +18,9 @@ BEGIN
     SET NOCOUNT ON;
     SET @ERR_IND = 0;
 	
-	IF (@inp_userId IS NULL OR @inp_emailAddress IS NULL)
+	IF (@inp_userId IS NULL OR @inp_email IS NULL)
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input provided: userId and emailAddress must not be null.';
+		SET @ERR_MESSAGE = 'Invalid input provided: userId and email must not be null.';
 		SET @ERR_IND = 1;
 	END
 	ELSE IF (@inp_userId NOT IN (SELECT id FROM users WHERE ACTIVE = 1))
@@ -33,9 +33,9 @@ BEGIN
 		SET @ERR_MESSAGE = 'User ID has already been deactivated.';
 		SET @ERR_IND = 1;
 	END
-	ELSE IF (@inp_emailAddress <> (SELECT emailAddress FROM users WHERE id = @inp_userId AND ACTIVE = 1))
+	ELSE IF (@inp_email <> (SELECT email FROM users WHERE id = @inp_userId AND ACTIVE = 1))
 	BEGIN
-		SET @ERR_MESSAGE = 'Invalid emailAddress provided';
+		SET @ERR_MESSAGE = 'Invalid email provided';
 		SET @ERR_IND = 1;
 	END
 	
@@ -54,7 +54,7 @@ BEGIN
 		SET @out_runId = (SELECT MAX(runId) from runIds WHERE processName = 'sp_deleteUser' AND UPDATED_BY = @inp_userId);
 
 		UPDATE users
-		SET ACTIVE = 0 WHERE id = @inp_userId AND emailAddress = @inp_emailAddress;
+		SET ACTIVE = 0 WHERE id = @inp_userId AND email = @inp_email;
 		
 		SET @u_updRows = @@ROWCOUNT;
 
