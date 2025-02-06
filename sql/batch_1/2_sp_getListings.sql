@@ -1,39 +1,18 @@
 USE RepairMart
 GO
 
-IF OBJECT_ID('sp_getListingById', 'P') IS NOT NULL
-    DROP PROCEDURE sp_getListingById;
+IF OBJECT_ID('sp_getListings', 'P') IS NOT NULL
+    DROP PROCEDURE sp_getListings;
 GO
 
-CREATE PROCEDURE sp_getListingById
-   @inp_listingId bigint,
+CREATE PROCEDURE sp_getListings
    @ERR_MESSAGE nvarchar(500) OUTPUT,
-   @ERR_IND BIT OUTPUT,
-   @out_runId bigint OUTPUT
+   @ERR_IND BIT OUTPUT
 AS
 BEGIN
 
     SET NOCOUNT ON;
     SET @ERR_IND = 0;
-
-	IF (@inp_listingId IS NULL
-	    OR TRY_CAST(@inp_listingId AS bigint) IS NULL
-		OR TRY_CAST(@inp_listingId AS bigint) < 1)
-	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input provided: listingId must be a positive integer.';
-		SET @ERR_IND = 1;
-	END
-	ELSE IF NOT EXISTS (SELECT 1 FROM listings WHERE listingId = @inp_listingId AND ACTIVE = 1)
-	BEGIN
-		SET @ERR_MESSAGE = 'Invalid input provided: no active record could be found for the listingId provided.';
-		SET @ERR_IND = 1;
-	END
-
-	IF @ERR_IND = 1
-	BEGIN
-		RAISERROR (@ERR_MESSAGE, 16, 1);
-		RETURN;
-	END
 
 	BEGIN TRY;
 
@@ -61,8 +40,7 @@ BEGIN
 	JOIN manufacturers m ON l.manufacturerId = m.manufacturerId AND m.ACTIVE = 1
 	JOIN currency cu ON l.listingBudgetCurrencyId = cu.currencyId AND cu.ACTIVE = 1
 	JOIN country co ON COALESCE(l.overrideCountryId, 1) = co.countryId
-    WHERE l.listingId = @inp_listingId
-	AND l.ACTIVE = 1;
+    WHERE l.ACTIVE = 1;
 
 	END TRY
 
