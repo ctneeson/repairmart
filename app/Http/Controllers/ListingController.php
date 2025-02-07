@@ -2,32 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\Listing;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ListingController extends Controller
 {
     //function for '/listings' route
-    public function index() {
-        // $listings = Listing::all();
-        // $listings = Listing::orderBy('DATE_INSERTED', 'desc')->get();
-        $listings = Listing::where('listingStatusId', '=', 1)->orderBy('DATE_INSERTED', 'desc')->get();
+    public function index(Request $request)
+    {
+        // Make a GET request to the API
+        $response = Http::get('http://127.0.0.1:8000/api/listings');
 
-        // Call the stored procedure and get the result
-        // $listing = DB::select('EXEC GetListingById ?', [$id]);
-    
-        // Check if the result is not empty and get the first element
-        // if (!empty($listing)) {
-        //     $listing = $listing[0];
-        // } else {
-            // Handle the case where no listing is found
-        //     abort(404, 'Listing not found');
-        // }
-
-            return view('listings.index', ['listings' => $listings]);
+        // Check if the request was successful
+        if ($response->successful()) {
+            $listings = $response->json()['data'];
+        } else {
+            // Handle the error
+            $listings = [];
         }
+
+        // Paginate the listings
+        $perPage = 20;
+        $page = $request->input('page', 1);
+        $total = count($listings);
+        $startingPoint = ($page - 1) * $perPage;
+        $listings = array_slice($listings, $startingPoint, $perPage);
+
+        // Create a paginator instance
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator($listings, $total, $perPage, $page, [
+            'path' => $request->url(),
+            'query' => $request->query(),
+        ]);
+
+        // Determine which view to return based on the route
+        $view = $request->route()->uri() === 'home' ? 'home' : 'listings.index';
+
+        // Return the view with the paginated listings data
+        return view($view, ['listings' => $paginator]);
+    }
 
     public function show($id) {
         $listing = Listing::findOrFail($id);
