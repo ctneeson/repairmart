@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,6 @@ use App\Http\Controllers\ListingController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::get('/login', function () {
     return view('login');
@@ -58,3 +58,7 @@ Route::get('/listings', [ListingController::class, 'index']);
 Route::get('/listings/create', [ListingController::class, 'create']);
 Route::post('/listings', [ListingController::class,'store']);
 Route::get('/listings/{id}', [ListingController::class, 'show']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/product-classifications', [ProductController::class, 'index']);
+});

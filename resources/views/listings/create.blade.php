@@ -2,87 +2,10 @@
 
 @section('head')
 <title>Create Listing</title>
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            const categories = {
-                'Arts, Crafts & Sewing': ['Printing Presses & Accessories', 'Sewing Machines', 'Other-Misc.'],
-                'Audio-Visual': ['Audio Headphones & Accessories', 'Blu-ray Players & Recorders', 'Cassette Players & Recorders', 'CB & Two-Way Radios', 'CD Players', 'Compact Radios & Stereos', 'Digital Voice Recorders', 'DVD Players & Recorders', 'Home Theater Systems', 'MP3 & MP4 Players', 'Radios', 'Satellite Television Products', 'Speakers & Audio Systems', 'Streaming Media Players', 'Televisions']
-            };
-
-            let fieldsetCount = 1;
-
-            function createFieldset() {
-                const fieldset = document.createElement('fieldset');
-                fieldset.innerHTML = `
-                    <legend>Product Type ${fieldsetCount}:</legend>
-                    <label for="category${fieldsetCount}">Category:</label>
-                    <select id="category${fieldsetCount}" name="category[]">
-                        <option value="">Select Category</option>
-                    </select>
-
-                    <label for="subcategory${fieldsetCount}">Subcategory:</label>
-                    <select id="subcategory${fieldsetCount}" name="subcategory[]">
-                        <option value="">Select Subcategory</option>
-                    </select>
-                `;
-
-                document.getElementById('product-types').appendChild(fieldset);
-
-                const categorySelect = document.getElementById(`category${fieldsetCount}`);
-                const subcategorySelect = document.getElementById(`subcategory${fieldsetCount}`);
-
-                // Populate categories
-                for (const category in categories) {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = category;
-                    categorySelect.appendChild(option);
-                }
-
-                // Handle category change
-                categorySelect.addEventListener('change', function() {
-                    const selectedCategory = categorySelect.value;
-                    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
-
-                    if (selectedCategory) {
-                        categories[selectedCategory].forEach(function(subcategory) {
-                            const option = document.createElement('option');
-                            option.value = subcategory;
-                            option.textContent = subcategory;
-                            subcategorySelect.appendChild(option);
-                        });
-                    }
-                });
-
-                // Handle subcategory change
-                subcategorySelect.addEventListener('change', function() {
-                    const selectedSubcategory = subcategorySelect.value;
-
-                    if (selectedSubcategory) {
-                        for (const category in categories) {
-                            if (categories[category].includes(selectedSubcategory)) {
-                                categorySelect.value = category;
-                                break;
-                            }
-                        }
-                    }
-                });
-
-                fieldsetCount++;
-            }
-
-            document.getElementById('add-product-type').addEventListener('click', function() {
-                if (fieldsetCount <= 3) {
-                    createFieldset();
-                } else {
-                    alert('You can only add up to 3 product types.');
-                }
-            });
-
-            // Create the initial fieldset
-            createFieldset();
-        });
-    </script>
+<script src="{{ asset('js/product-classifications.js') }}" defer></script>
+<script>
+    window.apiUrl = '{{ url('/product-classifications') }}';
+</script>
 @endsection
 
 @section('title')
