@@ -6,7 +6,10 @@
 
 @section('title')
     <h1>RepairMart</h1>
-    <p>Welcome to RepairMart</p>
+    <h2>
+        <a href="/login" class="home_link">Login</a>
+        <a href="/register" class="home_link">Sign Up</a>
+    </h2>
 @endsection
 
 @section('content')

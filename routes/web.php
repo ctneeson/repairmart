@@ -17,7 +17,7 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/login', function () {
@@ -36,23 +36,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-///////////////////
-// New additions //
-///////////////////
-
-// Route::get('/home', function () {
-//     $beatles = [
-//         ['firstName' => 'John', 'lastName' => 'Lennon'],
-//         ['firstName' => 'Paul', 'lastName' => 'McCartney'],
-//         ['firstName' => 'George', 'lastName' => 'Harrison'],
-//         ['firstName' => 'Ringo', 'lastName' => 'Starr']
-//     ];
-//     $user = ['userName' => 'RepairMart', 'loggedIn' => false, 'beatles' => $beatles];
-
-//     return view('home', $user, ['name' => request('name')]);
-// });
-
-Route::get('/home', [ListingController::class, 'index']);
+Route::get('/', [ListingController::class, 'index']);
 
 Route::get('/listings', [ListingController::class, 'index']);
 Route::get('/listings/create', [ListingController::class, 'create']);

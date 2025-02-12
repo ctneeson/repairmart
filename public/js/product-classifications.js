@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const apiUrl = window.apiUrl;
+    const apiUrl = "http://127.0.0.1:8000/product-classifications";
     let categories = {};
     let fieldsetCount = 1;
 

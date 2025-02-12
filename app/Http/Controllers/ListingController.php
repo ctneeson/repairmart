@@ -36,7 +36,7 @@ class ListingController extends Controller
         ]);
 
         // Determine which view to return based on the route
-        $view = $request->route()->uri() === 'home' ? 'home' : 'listings.index';
+        $view = $request->route()->uri() === '/' ? 'home' : 'listings.index';
 
         // Return the view with the paginated listings data
         return view($view, ['listings' => $paginator]);
