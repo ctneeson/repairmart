@@ -3,9 +3,6 @@
 @section('head')
 <title>Create Listing</title>
 <script src="{{ asset('js/product-classifications.js') }}" defer></script>
-<script>
-    window.apiUrl = '{{ url('/product-classifications') }}';
-</script>
 @endsection
 
 @section('title')

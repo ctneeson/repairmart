@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/product-classifications', [ProductController::class, 'index']);
 });
 
 require __DIR__.'/auth.php';
@@ -43,6 +44,6 @@ Route::get('/listings/create', [ListingController::class, 'create']);
 Route::post('/listings', [ListingController::class,'store']);
 Route::get('/listings/{id}', [ListingController::class, 'show']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/product-classifications', [ProductController::class, 'index']);
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/product-classifications', [ProductController::class, 'index']);
+// });

@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
     public function index()
     {
         // Define the API URL
-        $apiUrl = 'http://127.0.0.1:8000/api/product-classifications';
+        $apiUrl = config('api.url') . '/product-classifications';
 
-        // Make a GET request to the API
-        $response = Http::get($apiUrl);
+        // Make a GET request to the API with the authorization token
+        $response = Http::withToken(auth()->user()->api_token)->get($apiUrl);
 
         // Check if the request was successful
         if ($response->successful()) {
