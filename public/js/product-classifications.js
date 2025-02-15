@@ -4,10 +4,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let fieldsetCount = 1;
 
     function fetchCategories() {
-        fetch(apiUrl)
+        fetch(apiUrl, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("api_token"),
+            },
+        })
             .then((response) => response.json())
             .then((data) => {
-                if (data.data) {
+                if (Array.isArray(data.data)) {
                     data.data.forEach((item) => {
                         if (!categories[item.category]) {
                             categories[item.category] = [];
@@ -16,7 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                     createFieldset();
                 } else {
-                    console.error("Failed to fetch categories:", data.message);
+                    console.error(
+                        "Failed to fetch categories: data is not an array",
+                        data
+                    );
                 }
             })
             .catch((error) =>
