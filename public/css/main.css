@@ -1,3 +1,27 @@
+.navbar {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    font-family: Koulen;
+    color: #beda36;
+    background-color: #374149;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #beda36;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #555;
+    color: #beda36;
+}
+
 body {
     background-image: url("../img/circuit-board-background.jpg");
     background-repeat: no-repeat;
@@ -6,15 +30,20 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.main {
+    margin-top: 30px; /* Add a top margin to avoid content overlay */
+    margin-bottom: 30px; /* Add a bottom margin to avoid content overlay */
+}
+
 .center {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 75px;
 }
 
-#header {
-    background-color: #333;
+#title {
+    background-color: #374149;
     color: white;
     text-align: center;
     padding: 1em;
@@ -26,7 +55,10 @@ body {
 }
 
 #footer {
-    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #374149;
     color: white;
     text-align: center;
     padding: 1em;
@@ -36,14 +68,24 @@ body {
     font-family: Poppins;
 }
 
-.home_search {
+#home-title {
     text-align: center;
     color: #374149;
     font-size: 41.44px;
     font-family: Koulen;
     font-weight: 400;
     word-wrap: break-word;
-    background-color: white;
+    text-shadow: -2px -2px 0 #beda36, 2px -2px 0 #beda36, -2px 2px 0 #beda36,
+        2px 2px 0 #beda36;
+}
+
+.home_search {
+    text-align: center;
+    color: #374149;
+    font-size: 30px;
+    font-family: Koulen;
+    font-weight: 400;
+    word-wrap: break-word;
     text-shadow: -2px -2px 0 #beda36, 2px -2px 0 #beda36, -2px 2px 0 #beda36,
         2px 2px 0 #beda36;
 }

@@ -20,3 +20,7 @@ https://dev.to/omaromp2/install-microsoft-sql-server-php-drivers-in-laravel-sail
 https://dev.to/iankumu/how-to-build-a-rest-api-with-laravel-a-beginners-guide-2fjm
 https://www.itsolutionstuff.com/post/laravel-11-rest-api-authentication-using-sanctum-tutorialexample.html
 https://stackoverflow.com/questions/22355828/doing-http-requests-from-laravel-to-an-external-api
+
+- Google Places
+https://www.youtube.com/watch?v=qpUfj4zPxWQ
+https://www.youtube.com/watch?v=3hZqt98sko8
