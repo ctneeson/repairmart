@@ -2,6 +2,22 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+        <!-- User Type -->
+        <div>
+            <x-input-label for="user_type" :value="__('User Type')" />
+            <div class="mt-1">
+                <label class="inline-flex items-center">
+                    <input type="radio" class="form-radio" name="user_type" value="1" required>
+                    <span class="ml-2">{{ __('Personal') }}</span>
+                </label>
+                <label class="inline-flex items-center ml-6">
+                    <input type="radio" class="form-radio" name="user_type" value="2" required>
+                    <span class="ml-2">{{ __('Business') }}</span>
+                </label>
+            </div>
+            <x-input-error :messages="$errors->get('user_type')" class="mt-2" />
+        </div>
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />

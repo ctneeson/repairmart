@@ -18,7 +18,7 @@ CREATE TABLE dbo.users (
 	countryId bigint, -- FOREIGN KEY
 	postCode nvarchar(50),
 	accountTypeId bigint NOT NULL, --FOREIGN KEY
-	runId bigint NOT NULL,
+	runId bigint NOT NULL DEFAULT 0,
 	created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	ACTIVE bit NOT NULL DEFAULT 1

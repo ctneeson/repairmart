@@ -42,9 +42,19 @@ class ListingController extends Controller
         return view($view, ['listings' => $paginator]);
     }
 
-    public function show($id) {
-        $listing = Listing::findOrFail($id);
-        return view('listings.show', ['listing' => $listing]);
+    public function show($id)
+    {
+        // Make a GET request to the API
+        $response = Http::get("http://127.0.0.1:8000/api/listings/{$id}");
+
+        // Check if the request was successful
+        if ($response->successful()) {
+            $listing = $response->json()['data'][0];
+            return view('listings.show', ['listing' => $listing]);
+        } else {
+            // Handle the error
+            return redirect()->back()->withErrors(['error' => 'Listing not found.']);
+        }
     }
 
     public function create() {

@@ -21,7 +21,7 @@ VALUES (--'RepairMart', --businessName
 		3, --accountTypeId
 		0); --runId
 INSERT INTO userAuth(userId, salt, aes_key)
-SELECT MAX(id), @sysSalt, @sysAESKey FROM users WHERE runId = 0;
+SELECT MAX(id), @sysSalt, @sysAESKey FROM users WHERE email = 'system@repairmart.com';
 
 
 DECLARE @RC int

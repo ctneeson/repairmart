@@ -37,8 +37,10 @@
             <input class="home_search_textinput" type="text" placeholder="Enter text..">
             <button class="home_search_button">Go</button>
         </div>
-        <a href="/listings/create" class="home_link">Create Listing</a>
     </div>
 
     @include('partials.listings-grid', ['listings' => $listings])
+    <div class="home_link">
+        <a href="/listings/create" id="home-link">Create Listing</a>
+    </div>
 @endsection
