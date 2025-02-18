@@ -7,11 +7,12 @@
 
 @section('content')
 <div class="wrapper listing-details">
-    <h1>{{ $listing->listingTitle }}</h1>
-    <p>Status: {{ $listing->listingStatusId }}</p>
-    <p>Budget: {{ $listing->listingBudgetCurrencyId }} {{ $listing->listingBudget }}</p>
-    <p>Created at: {{ $listing->DATE_INSERTED }}</p>
-    <p>Created by: {{ $listing->userId }}</p>
+    <h1>{{ $listing['listingTitle'] }}</h1>
+    <p>Detail: {{ $listing['listingDetail'] }}</p>
+    <p>Manufacturer: {{ $listing['manufacturerName'] }}</p>
+    <p>Budget: {{ $listing['currencyISO'] }} {{ $listing['listingBudget'] }}</p>
+    <p>Expiry: {{ $listing['listingExpiryDate'] }}</p>
+    <p>Created by: {{ $listing['name'] }}</p>
     <a href="/listings" class="back">Back to Listings</a>
 </div>
 @endsection

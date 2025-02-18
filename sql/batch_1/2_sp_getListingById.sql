@@ -8,8 +8,7 @@ GO
 CREATE PROCEDURE sp_getListingById
    @inp_listingId bigint,
    @ERR_MESSAGE nvarchar(500) OUTPUT,
-   @ERR_IND BIT OUTPUT,
-   @out_runId bigint OUTPUT
+   @ERR_IND BIT OUTPUT
 AS
 BEGIN
 
@@ -49,6 +48,7 @@ BEGIN
 	 l.listingBudgetCurrencyId,
 	 cu.currencyISO,
 	 l.listingBudget,
+     l.useDefaultLocation,
 	 CASE WHEN l.useDefaultLocation = 0 THEN l.overrideAddressLine1 ELSE u.addressLine1 END AS listingAddressLine1,
 	 CASE WHEN l.useDefaultLocation = 0 THEN l.overrideAddressLine2 ELSE u.addressLine2 END AS listingAddressLine2,
 	 CASE WHEN l.useDefaultLocation = 0 THEN l.overrideCountryId ELSE u.countryId END AS listingCountryId,

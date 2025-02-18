@@ -24,3 +24,6 @@ https://stackoverflow.com/questions/22355828/doing-http-requests-from-laravel-to
 - Google Places
 https://www.youtube.com/watch?v=qpUfj4zPxWQ
 https://www.youtube.com/watch?v=3hZqt98sko8
+
+- CSS tables
+https://www.w3schools.com/Css/tryit.asp?filename=trycss_table_fancy

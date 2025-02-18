@@ -46,10 +46,13 @@ class ListingController extends Controller
     {
         // Make a GET request to the API
         $response = Http::get("http://127.0.0.1:8000/api/listings/{$id}");
-
+    
+        // Log the API response
+        Log::info('API Response:', $response->json());
+    
         // Check if the request was successful
         if ($response->successful()) {
-            $listing = $response->json()['data'][0];
+            $listing = $response->json()['data'];
             return view('listings.show', ['listing' => $listing]);
         } else {
             // Handle the error
