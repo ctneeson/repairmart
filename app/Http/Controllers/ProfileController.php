@@ -6,7 +6,9 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -16,9 +18,21 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $token = $request->user()->token;
+
+        // Make a GET request to the API to retrieve the user's profile information
+        $response = Http::withToken($token)->get('http://127.0.0.1:8000/api/user');
+
+        // Log the API response
+        Log::info('API Response:', $response->json());
+
+        if ($response->successful()) {
+            $user = $response->json();
+            return view('profile.edit', ['user' => $user]);
+        } else {
+            // Handle the error
+            return redirect()->back()->withErrors(['error' => 'Failed to retrieve profile information.']);
+        }
     }
 
     /**
@@ -26,15 +40,20 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $token = $request->user()->token;
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Make a PUT request to the API to update the user's profile information
+        $response = Http::withToken($token)->put('http://127.0.0.1:8000/api/user', $request->validated());
+
+        // Log the API response
+        Log::info('API Response:', $response->json());
+
+        if ($response->successful()) {
+            return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        } else {
+            // Handle the error
+            return redirect()->back()->withErrors(['error' => 'Failed to update profile information.']);
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**
@@ -42,19 +61,29 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $token = $request->user()->token;
+
+        // Validate the password
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
-        $user = $request->user();
+        // Make a DELETE request to the API to delete the user's account
+        $response = Http::withToken($token)->delete('http://127.0.0.1:8000/api/user');
 
-        Auth::logout();
+        // Log the API response
+        Log::info('API Response:', $response->json());
 
-        $user->delete();
+        if ($response->successful()) {
+            Auth::logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+            return Redirect::to('/');
+        } else {
+            // Handle the error
+            return redirect()->back()->withErrors(['error' => 'Failed to delete account.']);
+        }
     }
 }

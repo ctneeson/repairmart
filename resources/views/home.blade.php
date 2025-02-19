@@ -10,9 +10,11 @@
         console.log('Token:', token); // Debugging log
 
         if (token) {
-            authLinks.innerHTML = '<a href="/logout" class="home_link">Log Out</a>';
+            authLinks.innerHTML = '<a href="/logout" class="home_link">Log Out</a>'
+                                + '<a href="/listings/create" class="home-link">Create Listing</a>';
         } else {
-            authLinks.innerHTML = '<a href="/login" class="home_link">Login</a><a href="/register" class="home_link">Sign Up</a>';
+            authLinks.innerHTML = '<a href="/login" class="home_link">Login</a>'
+                                + '<a href="/register" class="home_link">Sign Up</a>';
         }
     });
 </script>
@@ -40,7 +42,4 @@
     </div>
 
     @include('partials.listings-grid', ['listings' => $listings])
-    <div class="home_link">
-        <a href="/listings/create" id="home-link">Create Listing</a>
-    </div>
 @endsection
