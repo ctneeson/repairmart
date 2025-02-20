@@ -1,4 +1,5 @@
-import 'bootstrap';
+import "bootstrap";
+import axios from "axios";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,10 +7,25 @@ import 'bootstrap';
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
 window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.baseURL = "http://localhost:8000/api";
+
+// Add a request interceptor to include the token in each request
+window.axios.interceptors.request.use(
+    function (config) {
+        const token = localStorage.getItem("api_token");
+        console.log("Retrieved token:", token); // Log the token for debugging
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

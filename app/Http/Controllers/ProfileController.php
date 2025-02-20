@@ -18,7 +18,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        Log::info('ProfileController: edit method called');
+
         $token = $request->user()->token;
+
+        // Log the token for debugging
+        Log::info('User Token:', ['token' => $token]);
 
         // Make a GET request to the API to retrieve the user's profile information
         $response = Http::withToken($token)->get('http://127.0.0.1:8000/api/user');
