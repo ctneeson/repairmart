@@ -20,8 +20,10 @@ class ProfileController extends Controller
     {
         $token = $request->user()->token;
 
-        // Make a GET request to the API to retrieve the user's profile information
-        $response = Http::withToken($token)->get('http://127.0.0.1:8000/api/user');
+        // Manually set the Authorization header
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->get('http://127.0.0.1:8000/api/user');
 
         // Log the API response
         Log::info('API Response:', $response->json());
